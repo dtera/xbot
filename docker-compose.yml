@@ -1,0 +1,10 @@
+services:
+  xbot:
+    #build: .
+    image: zhaohq828/xbot
+    container_name: xbot
+    network_mode: host
+    volumes:
+        - './services:/data/xbot/services'
+        - './config.py:/data/xbot/config.py'
+        - './local.db:/data/xbot/local.db'

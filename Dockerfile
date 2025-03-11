@@ -28,6 +28,12 @@ ENV PYTHONPATH=/data:/data/xbot
 # 设置工作目录
 WORKDIR /data/xbot
 
+COPY *.py local.db  ./
+COPY common ./common
+COPY spec_line_proc_funcs ./spec_line_proc_funcs
+
+VOLUME /data/xbot/services
+
 # 设置容器启动时的默认命令
 CMD ["python3.13", "-m", "xbot.wecom_app"]
 
