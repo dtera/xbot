@@ -9,7 +9,7 @@ RUN apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && \
-    apt-get install -y wget build-essential libssl-dev zlib1g-dev libbz2-dev \
+    apt-get install -y vim wget build-essential libssl-dev zlib1g-dev libbz2-dev \
     libreadline-dev libsqlite3-dev curl libncurses5-dev libncursesw5-dev \
     xz-utils tk-dev libffi-dev liblzma-dev git python3.13 python3.13-venv python3.13-dev && \
     apt-get clean && \

@@ -6,5 +6,5 @@ services:
     network_mode: host
     volumes:
         - './services:/data/xbot/services'
-        - './config.py:/data/xbot/config.py'
+        - './config.json:/data/xbot/config.json'
         - './local.db:/data/xbot/local.db'

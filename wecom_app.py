@@ -35,8 +35,9 @@ def msg_handler(req_msg: ReqMsg, server: WecomBotServer):
             def fail_cb(result):
                 logger.info(f"fail to process msg from {req_msg.from_user.en_name}: {req_msg.content.lstrip()}")
 
-            cmd_ret = sync_async_proc.SyncAsyncRspProcessor(task, timeout=2, complete_cb=cb, fail_timeout=10,
-                                                            fail_cb=fail_cb).get_result()
+            from config import timeout, fail_timeout
+            cmd_ret = sync_async_proc.SyncAsyncRspProcessor(task, timeout=timeout, complete_cb=cb,
+                                                            fail_timeout=fail_timeout, fail_cb=fail_cb).get_result()
             if cmd_ret is not None:  # 即时消息，立马返回
                 if isinstance(cmd_ret, str):
                     ret = RspTextMsg()
