@@ -74,7 +74,7 @@ def event_handler(req_msg):
 
 def main():
     from config import wecom_token, wecom_aes_key, wecom_corp_id, wecom_bot_key, wecom_bot_name, wecom_svr_host, \
-        wecom_svr_port, wecom_svr_path
+        wecom_svr_port, wecom_svr_path, intranet
 
     server = WecomBotServer(
         wecom_bot_name,
@@ -85,7 +85,7 @@ def main():
         aes_key=wecom_aes_key,
         corp_id=wecom_corp_id,
         bot_key=wecom_bot_key,
-        intranet=True
+        intranet=intranet
     )
     logger.info(f"Server started at {wecom_svr_host}:{wecom_svr_port}{wecom_svr_path}")
 

@@ -30,3 +30,4 @@ wecom_svr_port = conf["wecom_svr_port"] if "wecom_svr_port" in conf else 5001
 wecom_svr_path = conf["wecom_svr_path"] if "wecom_svr_path" in conf else "/wecom_bot"
 timeout = conf["timeout"] if "timeout" in conf else 2
 fail_timeout = conf["fail_timeout"] if "fail_timeout" in conf else 10
+intranet = conf["intranet"] if "intranet" in conf else False
