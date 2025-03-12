@@ -24,7 +24,7 @@ wecom_aes_key = conf[
     "wecom_aes_key"] if "wecom_aes_key" in conf else "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  # 43个x
 wecom_corp_id = conf["wecom_corp_id"] if "wecom_corp_id" in conf else ""
 wecom_bot_key = conf["wecom_bot_key"] if "wecom_bot_key" in conf else "xxxxx"  # 机器人配置中的webhook key
-wecom_bot_name = conf["wecom_bot_name"] if "wecom_bot_name" in conf else "jasonzxpan-bot"  # 这里要跟机器人名字一样，用于切分群组聊天中的@消息
+wecom_bot_name = conf["wecom_bot_name"] if "wecom_bot_name" in conf else "xbot"  # 跟机器人名字一样，用于切分群组聊天中的@消息
 wecom_svr_host = conf["wecom_svr_host"] if "wecom_svr_host" in conf else "0.0.0.0"
 wecom_svr_port = conf["wecom_svr_port"] if "wecom_svr_port" in conf else 5001
 wecom_svr_path = conf["wecom_svr_path"] if "wecom_svr_path" in conf else "/wecom_bot"
