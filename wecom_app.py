@@ -32,7 +32,7 @@ def msg_handler(req_msg: ReqMsg, server: WecomBotServer):
                 else:
                     logger.error(f"Unknown result type: {result}")
 
-            def fail_cb(result):
+            def fail_cb(result=None):
                 logger.info(f"fail to process msg from {req_msg.from_user.en_name}: {req_msg.content.lstrip()}")
 
             from config import timeout, fail_timeout
