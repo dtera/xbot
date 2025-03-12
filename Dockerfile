@@ -15,11 +15,11 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# 安装 pip 和所需的 Python 包
+# 安装pip和所需的Python包     pip3.13 install wecom-bot-svr==0.3.3 requests
 RUN wget https://bootstrap.pypa.io/get-pip.py && python3.13 get-pip.py && \
     pip3.13 install --upgrade pip && \
     pip3.13 install --ignore-installed blinker && \
-    pip3.13 install wecom-bot-svr==0.3.3 requests && \
+    pip3.13 install https://github.com/dtera/wecom-bot-svr/tarball/main requests && \
     rm get-pip.py
 
 # 设置 PYTHONPATH 环境变量

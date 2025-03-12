@@ -85,6 +85,7 @@ def main():
         aes_key=wecom_aes_key,
         corp_id=wecom_corp_id,
         bot_key=wecom_bot_key,
+        intranet=True
     )
     logger.info(f"Server started at {wecom_svr_host}:{wecom_svr_port}{wecom_svr_path}")
 
