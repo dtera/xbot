@@ -1,6 +1,6 @@
 import importlib
 
-from config import scene_dirs, special_line_prefix
+from config import scene_dirs, special_line_prefix, use_permission
 from auth import UserPermissionHelper
 from common import logger, XBotMsg
 
@@ -28,7 +28,7 @@ def handle_command(user_id, msg) -> str | XBotMsg:
     for prefix, handle_func in special_line_prefix:
         if msg.startswith(prefix):
             p_helper = UserPermissionHelper()
-            if not p_helper.check_user_permission(user_id, prefix, ""):
+            if use_permission and not p_helper.check_user_permission(user_id, prefix, ""):
                 return "Permission denied"
             return handle_func(user_id, msg[len(prefix):])
 
@@ -74,7 +74,7 @@ def handle_command(user_id, msg) -> str | XBotMsg:
     # 检查用户是否拥有权限
     if package != "public":
         p_helper = UserPermissionHelper()
-        if not p_helper.check_user_permission(user_id, cmd, subcmd):
+        if use_permission and not p_helper.check_user_permission(user_id, cmd, subcmd):
             return "Permission denied"
 
     logger.info(f"User[{user_id}] execute command: {cmd} {subcmd} {args}")
