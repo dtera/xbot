@@ -19,7 +19,7 @@ RUN apt-get update && \
 RUN wget https://bootstrap.pypa.io/get-pip.py && python3.13 get-pip.py && \
     pip3.13 install --upgrade pip && \
     pip3.13 install --ignore-installed blinker && \
-    pip3.13 install https://github.com/dtera/wecom-bot-svr/tarball/main requests markdown bleach beautifulsoup4 && \
+    pip3.13 install https://github.com/dtera/wecom-bot-svr/tarball/main requests markdown markitdown bleach beautifulsoup4 && \
     rm get-pip.py
 
 # 设置 PYTHONPATH 环境变量
