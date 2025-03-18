@@ -17,7 +17,7 @@ def msg_handler(req_msg: ReqMsg, server: WecomBotServer):
 
         try:
             def task():
-                return handle_command(req_msg.from_user.en_name, req_msg.content.lstrip())
+                return handle_command(req_msg, server)
 
             def cb(result):
                 if isinstance(result, str):

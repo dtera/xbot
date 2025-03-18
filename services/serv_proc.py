@@ -8,15 +8,15 @@ from markdown import markdown
 from markdown_it import MarkdownIt
 from markupsafe import Markup
 from mdit_py_plugins import footnote, front_matter
-from wecom_bot_svr.app import web
+from wecom_bot_svr.app import web, WecomBotServer, ReqMsg
 
 from common import MarkdownMsg, FileMsg, logger
 from config import conf
 
 try:
-    from services.agents import generate
+    from services.agents import generate, generate_
 except ImportError:
-    def generate(query: str, stream=False, converter=None, sleep_t=0.002):
+    def generate_(query: str, stream=False, converter=None):
         content = f"""### 列表示例
 1. 项目绑定资源
    - 无相关业务项目先创建项目
@@ -24,7 +24,11 @@ except ImportError:
 2. 注册pulsar数据源
    - 填写基础信息和表字段
 """
-        content = converter(content) if converter else content
+        return converter(content) if converter else content
+
+
+    def generate(query: str, stream=False, converter=None, sleep_t=0.002):
+        content = generate_(query, stream, converter)
         for i in range(len(content)):
             sleep(sleep_t)
             yield f"{content[i]}"
@@ -63,13 +67,17 @@ def stream_q(query=''):
     return Response(stream_with_context(generate(query, stream=True)))
 
 
-def query(user_id, msg, chat_id=None):
-    content = "".join(i for i in generate(msg))
-    if "```" not in content:
-        content = f"```markdown{content}```"
-    logger.info(f"len({len(content)})\n{content}")
-    if len(content) > max_out_len or is_out_to_file:
-        with open(out_fn, 'w') as f:
-            f.write(content)
-        return FileMsg(out_fn)
-    return MarkdownMsg(content)
+def query(req_msg: ReqMsg, server: WecomBotServer, msg):
+    server.send_markdown(req_msg.chat_id, f"点击**[查询流式输出]({conf["out_link"]}/{msg})**可快速获取结果")
+    if "wait_result" in conf and conf["wait_result"]:
+        content = generate_(msg)
+        if "```" not in content:
+            content = f"```markdown{content}```"
+        logger.info(f"len({len(content)})\n{content}")
+        if len(content) > max_out_len or is_out_to_file:
+            with open(out_fn, 'w') as f:
+                f.write(content)
+            return FileMsg(out_fn)
+        return MarkdownMsg(content)
+    else:
+        return ""

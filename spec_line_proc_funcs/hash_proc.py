@@ -1,8 +1,10 @@
 import random
 import time
 
+from wecom_bot_svr.app import WecomBotServer, ReqMsg
 
-def handle_command(user_id, msg, chat_id=None):
+
+def handle_command(req_msg: ReqMsg, server: WecomBotServer, msg):
     # TODO: Implement line starting with '#' handling"
     random_number = random.choice([0, 1, 2])
     if random_number == 0:
