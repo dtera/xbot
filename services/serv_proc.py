@@ -112,7 +112,8 @@ def stream_q(query=''):
 
 
 def query(req_msg: ReqMsg, server: WecomBotServer, msg):
-    server.send_markdown(req_msg.chat_id, f"点击**[查询流式输出]({conf["out_link"]}/{msg})**可快速获取结果")
+    if msg.strip() not in ["help", "example"]:
+        server.send_markdown(req_msg.chat_id, f"点击**[查询流式输出]({conf["out_link"]}/{msg})**可快速获取结果")
     if "wait_result" in conf and conf["wait_result"]:
         content = generate_(msg)
         if "```" not in content:
