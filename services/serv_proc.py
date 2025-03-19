@@ -71,7 +71,10 @@ caches = {}
 def gen_content(query, stream=False, converter=None):
     if query.startswith("c@"):
         q = get_query(query.lstrip("c@"))
-        caches.pop(q)
+        if q == "all":
+            caches.clear()
+        else:
+            caches.pop(q)
 
         def gen():
             yield f"{q}相关缓存已经清除"
