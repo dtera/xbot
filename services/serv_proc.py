@@ -1,6 +1,7 @@
 # coding: utf-8
 # Copyright (c) dterazhao. All rights reserved.
 from time import sleep
+import threading
 
 from bs4 import BeautifulSoup
 from flask import Response, stream_with_context
@@ -14,8 +15,15 @@ from common import MarkdownMsg, FileMsg, logger
 from config import conf
 
 try:
-    from services.agents import generate, generate_
+    from services.agents import generate, generate_, get_query, head_t
 except ImportError:
+    head_t = ""
+
+
+    def get_query(query: str):
+        return query
+
+
     def generate_(query: str, stream=False, converter=None):
         content = f"""### 列表示例
 1. 项目绑定资源
@@ -27,7 +35,7 @@ except ImportError:
         return converter(content) if converter else content
 
 
-    def generate(query: str, stream=False, converter=None, sleep_t=0.002):
+    def generate(query: str, stream=False, converter=None, consumer=None, sleep_t=0.002):
         content = generate_(query, stream, converter)
         for i in range(len(content)):
             sleep(sleep_t)
@@ -57,14 +65,47 @@ def md2html(md):
     return html
 
 
+caches = {}
+
+
+def gen_content(query, stream=False, converter=None):
+    if query.startswith("c@"):
+        q = get_query(query.lstrip("c@"))
+        caches.pop(q)
+
+        def gen():
+            yield f"{q}相关缓存已经清除"
+
+        content = gen()
+    else:
+        q = get_query(query)
+        if q in caches:
+            def gen():
+                response = mdt.render(caches[q])
+                yield """<!DOCTYPE html><html>{head}<body class="markdown-body">""".format(head=head_t)
+                for i in range(len(response)):
+                    sleep(0.02)
+                    yield f"{response[i]}"
+                yield '</body></html>'
+
+            content = gen()
+        else:
+            def add2caches(c):
+                if q not in ["help", "example"]:
+                    caches.update({q: c})
+
+            content = generate(q, stream=stream, converter=converter, consumer=add2caches)
+    return content
+
+
 @web.get("/query/<query>")
 def q(query=''):
-    return Response(stream_with_context(generate(query, stream=False, converter=mdt.render)))
+    return Response(stream_with_context(gen_content(query, stream=False, converter=mdt.render)))
 
 
 @web.get("/stream/query/<query>")
 def stream_q(query=''):
-    return Response(stream_with_context(generate(query, stream=True)))
+    return Response(stream_with_context(gen_content(query, True)))
 
 
 def query(req_msg: ReqMsg, server: WecomBotServer, msg):
