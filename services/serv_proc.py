@@ -1,7 +1,7 @@
 # coding: utf-8
 # Copyright (c) dterazhao. All rights reserved.
+import urllib.request as req
 from time import sleep
-import threading
 
 from bs4 import BeautifulSoup
 from flask import Response, stream_with_context
@@ -113,7 +113,9 @@ def stream_q(query=''):
 
 def query(req_msg: ReqMsg, server: WecomBotServer, msg):
     if msg.strip() not in ["help", "example"]:
-        server.send_markdown(req_msg.chat_id, f"点击**[查询流式输出]({conf["out_link"]}/{msg})**可快速获取结果")
+        # server.send_markdown(req_msg.chat_id, f"点击**[查询流式输出]({conf["out_link"]}/{msg})**可快速获取结果")
+        server.send_text(req_msg.chat_id,
+                         f"点击下述链接可快速获取【{msg}】的流式输出\n{conf["out_link"]}/{req.quote(msg)}")
     if "wait_result" in conf and conf["wait_result"]:
         content = generate_(msg)
         logger.info(f"len({len(content)})\n{content}")
